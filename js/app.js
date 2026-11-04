@@ -385,7 +385,7 @@
       var sampleWords = currentTab === "nouns" ? ["bil", "flicka", "hus", "äpple"] :
         currentTab === "adjectives" ? ["stor", "bra", "fin", "liten"] : ["skriva", "gå", "äta", "bo"];
       resultBox.innerHTML =
-        '<div class="empty-state"><b>Type a word first.</b><br>Try tapping one of these:' +
+        '<div class="empty-state"><b>Digite uma palavra primeiro.</b><br>Tente tocar em uma destas:' +
         '<div class="chips">' +
         sampleWords.map(function (w) { return '<button type="button" class="chip" data-search="' + esc(w) + '">' + esc(w) + '</button>'; }).join("") +
         '</div></div>';
@@ -397,13 +397,13 @@
       if (!v && verbsByForm[q]) {
         var hit = verbsByForm[q][0];
         v = hit.verb;
-        notice = '<b>' + esc(raw.trim()) + '</b> is the ' + hit.label + ' form of <b>' + esc(v[0]) + '</b>.';
+        notice = '<b>' + esc(raw.trim()) + '</b> é a forma ' + hit.label + ' de <b>' + esc(v[0]) + '</b>.';
       }
       if (!v) {
         var s = suggestVerbs(q, 1);
         if (s.length) {
           v = s[0].item;
-          notice = 'Showing closest match for <b>' + esc(raw.trim()) + '</b>.';
+          notice = 'Mostrando o resultado mais próximo de <b>' + esc(raw.trim()) + '</b>.';
         }
       }
       if (!v && q.length >= 3) {
@@ -415,7 +415,7 @@
 
         if (near.length) {
           resultBox.innerHTML =
-            '<div class="empty-state"><b>No verb called “' + esc(raw.trim()) + '” found.</b><br>Did you mean:' +
+            '<div class="empty-state"><b>Nenhum verbo chamado “' + esc(raw.trim()) + '” foi encontrado.</b><br>Você quis dizer:' +
             '<div class="chips">' +
             near.map(function (o) { return '<button type="button" class="chip" data-search="' + esc(o.v[0]) + '">' + esc(o.v[0]) + '</button>'; }).join("") +
             '</div></div>';
@@ -424,7 +424,7 @@
       }
       if (!v) {
         resultBox.innerHTML =
-          '<div class="empty-state"><b>“' + esc(raw.trim()) + '” is not in the curated verb list yet.</b><br>Try an infinitive (like <em>skriva</em>) or an English word.<div class="chips"><button type="button" class="chip" data-search="skriva">skriva</button><button type="button" class="chip" data-search="äta">äta</button><button type="button" class="chip" data-search="komma">komma</button></div></div>';
+          '<div class="empty-state"><b>“' + esc(raw.trim()) + '” ainda não está na lista de verbos.</b><br>Tente um infinitivo (como <em>skriva</em>) ou uma palavra em português.<div class="chips"><button type="button" class="chip" data-search="skriva">skriva</button><button type="button" class="chip" data-search="äta">äta</button><button type="button" class="chip" data-search="komma">komma</button></div></div>';
         return;
       }
       searchInput.value = v[0];
@@ -437,18 +437,18 @@
       if (!n && nounsByForm[cleanQ]) {
         var nHit = nounsByForm[cleanQ][0];
         n = nHit.noun;
-        nounNotice = '<b>' + esc(raw.trim()) + '</b> is the ' + nHit.label + ' of <b>' + esc(n[4] + " " + n[0]) + '</b>.';
+        nounNotice = '<b>' + esc(raw.trim()) + '</b> é a forma ' + nHit.label + ' de <b>' + esc(n[4] + " " + n[0]) + '</b>.';
       }
       if (!n) {
         var ns = suggestNouns(cleanQ, 1);
         if (ns.length) {
           n = ns[0].item;
-          nounNotice = 'Showing closest match for <b>' + esc(raw.trim()) + '</b>.';
+          nounNotice = 'Mostrando o resultado mais próximo de <b>' + esc(raw.trim()) + '</b>.';
         }
       }
       if (!n) {
         resultBox.innerHTML =
-          '<div class="empty-state"><b>“' + esc(raw.trim()) + '” was not found in the noun list yet.</b><br>Try searching <em>bil</em>, <em>flicka</em>, <em>äpple</em>, or <em>hus</em>.<div class="chips"><button type="button" class="chip" data-search="bil">bil</button><button type="button" class="chip" data-search="katt">katt</button><button type="button" class="chip" data-search="hus">hus</button><button type="button" class="chip" data-search="äpple">äpple</button></div></div>';
+          '<div class="empty-state"><b>“' + esc(raw.trim()) + '” ainda não está na lista de substantivos.</b><br>Tente buscar <em>bil</em>, <em>flicka</em>, <em>äpple</em> ou <em>hus</em>.<div class="chips"><button type="button" class="chip" data-search="bil">bil</button><button type="button" class="chip" data-search="katt">katt</button><button type="button" class="chip" data-search="hus">hus</button><button type="button" class="chip" data-search="äpple">äpple</button></div></div>';
         return;
       }
       searchInput.value = n[0];
@@ -468,12 +468,12 @@
         var adjectiveSuggestions = suggestAdjectives(q, 1);
         if (adjectiveSuggestions.length) {
           adjective = adjectiveSuggestions[0].item;
-          adjectiveNotice = 'Showing closest match for <b>' + esc(raw.trim()) + '</b>.';
+          adjectiveNotice = 'Mostrando o resultado mais próximo de <b>' + esc(raw.trim()) + '</b>.';
         }
       }
       if (!adjective) {
         resultBox.innerHTML =
-          '<div class="empty-state"><b>“' + esc(raw.trim()) + '” hittades inte bland adjektiven.</b><br>Prova ett svenskt ord eller en engelsk betydelse.</div>';
+          '<div class="empty-state"><b>“' + esc(raw.trim()) + '” hittades inte bland adjektiven.</b><br>Prova ett svenskt ord eller en portugisisk betydelse.</div>';
         return;
       }
       searchInput.value = adjective[0];
