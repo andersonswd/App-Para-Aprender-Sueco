@@ -22,6 +22,8 @@
   // Verbs not yet translated keep their English text.
   var ptVerbs = window.ORDKOMPIS_PT_VERBS || {};
   verbs.forEach(function (v) { var t = ptVerbs[v[0]]; if (t) { v[1] = t[0]; v[7] = t[1]; } });
+  var ptNouns = window.ORDKOMPIS_PT_NOUNS || {};
+  nouns.forEach(function (n) { var t = ptNouns[n[0]]; if (t) { n[6] = t[0]; n[8] = t[1]; } });
 
   // State
   var currentTab = "verbs"; // "verbs", "nouns", "themes", "quiz"
