@@ -8,7 +8,7 @@ O OrdKompis é um app web gratuito para praticar sueco: verbos, en/ett, adjetivo
 
 - [x] Rótulos das fichas de verbo e substantivo
 - [x] Busca por palavras em português (ex.: "escrever" encontra *skriva*)
-- [ ] Verbos: 370 de 478 traduzidos
+- [x] Verbos: todos os 478 traduzidos
 - [ ] Substantivos
 - [ ] Quiz e textos restantes da interface
 - [ ] Adjetivos, preposições, ordem das palavras, pronomes, tal & tid, frases, idiomas, falsos amigos, colocações, verbo + preposição, erros comuns
