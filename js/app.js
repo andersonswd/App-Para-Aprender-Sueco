@@ -24,6 +24,8 @@
   verbs.forEach(function (v) { var t = ptVerbs[v[0]]; if (t) { v[1] = t[0]; v[7] = t[1]; } });
   var ptNouns = window.ORDKOMPIS_PT_NOUNS || {};
   nouns.forEach(function (n) { var t = ptNouns[n[0]]; if (t) { n[6] = t[0]; n[8] = t[1]; } });
+  var ptAdj = window.ORDKOMPIS_PT_ADJECTIVES || [];
+  adjectives.forEach(function (a, i) { var t = ptAdj[i]; if (t && t[0] === a[0]) { a[7] = t[1]; a[9] = t[2]; } });
 
   // State
   var currentTab = "verbs"; // "verbs", "nouns", "themes", "quiz"
