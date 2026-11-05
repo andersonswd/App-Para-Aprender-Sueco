@@ -28,6 +28,23 @@
   adjectives.forEach(function (a, i) { var t = ptAdj[i]; if (t && t[0] === a[0]) { a[7] = t[1]; a[9] = t[2]; } });
   var ptPreps = window.ORDKOMPIS_PT_PREPOSITIONS || [];
   prepositions.forEach(function (p, i) { var t = ptPreps[i]; if (t && t.prep === p.prep && t.rules.length === p.rules.length && t.examples.length === p.examples.length) { p.english = t.english; p.rules = t.rules; p.verbCombinations = t.verbCombinations; p.examples.forEach(function (e, j) { e.en = t.examples[j]; }); } });
+  var ptPron = window.ORDKOMPIS_PT_PRONOUNS, prn = window.ORDKOMPIS_PRONOUNS;
+  if (ptPron && prn) {
+    if (ptPron.description) prn.description = ptPron.description;
+    if (prn.personal && ptPron.personalLabels && ptPron.personalLabels.length === prn.personal.rows.length) prn.personal.rows.forEach(function (r, i) { r[0] = ptPron.personalLabels[i]; });
+    var sp = ptPron.sin, ss = prn.sinSittSina;
+    if (sp && ss) {
+      ss.description = sp.description;
+      ss.rules.forEach(function (r, i) { if (sp.rules[i]) { r.rule = sp.rules[i].rule; r.example = sp.rules[i].example; } });
+      ss.contrastExamples.forEach(function (c, i) { if (sp.contrast[i]) { c.en = sp.contrast[i].en; c.note = sp.contrast[i].note; } });
+    }
+    [["demo", "demonstrative"], ["interro", "interrogative"], ["indef", "indefinite"]].forEach(function (k) {
+      var t = ptPron[k[0]], s = prn[k[1]];
+      if (t && s) { s.title = t.title; s.rows.forEach(function (r, i) { if (t.rows[i]) r.en = t.rows[i]; }); }
+    });
+  }
+  var ptIdioms = window.ORDKOMPIS_PT_IDIOMS || [];
+  (window.ORDKOMPIS_IDIOMS || []).forEach(function (it, i) { var t = ptIdioms[i]; if (t && t.id === it.id) { it.literal = t.literal; it.en = t.en; it.exampleEn = t.exampleEn; } });
   var ptWO = window.ORDKOMPIS_PT_WORDORDER;
   if (ptWO && wordorder) {
     if (ptWO.description) wordorder.description = ptWO.description;
@@ -751,7 +768,7 @@
         html += '<article class="lesson-card">' +
           '<h3>' + esc(item.sv) + ' ' + speakerButton(item.sv, "Lyssna på uttrycket") + '</h3>' +
           '<p style="margin:6px 0;color:var(--muted)"><b>Bokstavligt:</b> ' + esc(item.literal) + '</p>' +
-          '<p style="margin:6px 0"><b>Betydelse på engelska:</b> ' + esc(item.en) + '</p>' +
+          '<p style="margin:6px 0"><b>Betydelse på portugisiska:</b> ' + esc(item.en) + '</p>' +
           (item.exampleSv ? '<p style="margin:10px 0 4px"><b>Exempel:</b> ' + esc(item.exampleSv) + ' ' + speakerButton(item.exampleSv) + '</p>' : '') +
           (item.exampleEn ? '<p style="margin:4px 0;color:var(--muted)">' + esc(item.exampleEn) + '</p>' : '') +
           '</article>';
@@ -1366,16 +1383,7 @@
     idiomBtn.innerHTML = '<span class="tab-icon">🗣️</span><span class="nav-label">Uttryck</span>';
     moreMenuEl.appendChild(idiomBtn);
   }
-  if (moreMenuEl && !moreMenuEl.querySelector('[data-tab="falsefriends"]')) {
-    var ffBtn = document.createElement('button');
-    ffBtn.type = 'button';
-    ffBtn.className = 'nav-tab';
-    ffBtn.setAttribute('data-tab', 'falsefriends');
-    ffBtn.setAttribute('role', 'tab');
-    ffBtn.setAttribute('aria-selected', 'false');
-    ffBtn.innerHTML = '<span class="tab-icon">⚠️</span><span class="nav-label">Vanliga fällor</span>';
-    moreMenuEl.appendChild(ffBtn);
-  }
+  // Tab "Vanliga fällor" (English false friends) is hidden in the Portuguese version.
 
   switchTab("verbs");
 
