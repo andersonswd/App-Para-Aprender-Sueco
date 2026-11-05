@@ -28,6 +28,21 @@
   adjectives.forEach(function (a, i) { var t = ptAdj[i]; if (t && t[0] === a[0]) { a[7] = t[1]; a[9] = t[2]; } });
   var ptPreps = window.ORDKOMPIS_PT_PREPOSITIONS || [];
   prepositions.forEach(function (p, i) { var t = ptPreps[i]; if (t && t.prep === p.prep && t.rules.length === p.rules.length && t.examples.length === p.examples.length) { p.english = t.english; p.rules = t.rules; p.verbCombinations = t.verbCombinations; p.examples.forEach(function (e, j) { e.en = t.examples[j]; }); } });
+  var ptWO = window.ORDKOMPIS_PT_WORDORDER;
+  if (ptWO && wordorder) {
+    if (ptWO.description) wordorder.description = ptWO.description;
+    (wordorder.sections || []).forEach(function (s) {
+      var t = ptWO.sections && ptWO.sections[s.id]; if (!t) return;
+      if (t.title) s.title = t.title;
+      if (t.explanation) s.explanation = t.explanation;
+      if (t.rules && s.rules && t.rules.length === s.rules.length) s.rules = t.rules;
+      if (s.wrongExamples) s.wrongExamples.forEach(function (w, j) { if (t.why && t.why[j]) w.why = t.why[j]; if (t.wrong && t.wrong[j]) w.wrong = t.wrong[j]; });
+      if (s.slots && t.slotDescs) s.slots.forEach(function (sl, j) { if (t.slotDescs[j]) sl.desc = t.slotDescs[j]; });
+      if (s.words && t.words) s.words.forEach(function (w, j) { if (t.words[j]) w.en = t.words[j]; });
+      if (t.mainLabel && s.mainClauseExample) s.mainClauseExample.label = t.mainLabel;
+      if (t.subLabel && s.subClauseExample) s.subClauseExample.label = t.subLabel;
+    });
+  }
 
   // State
   var currentTab = "verbs"; // "verbs", "nouns", "themes", "quiz"
@@ -692,7 +707,7 @@
       '<section class="learning-section"><h3>' + esc(numbers.cardinals.title) + '</h3>' + renderPairs(numbers.cardinals.numbers) + renderNotes(numbers.cardinals.notes) + '</section>' +
       '<section class="learning-section"><h3>' + esc(numbers.ordinals.title) + '</h3>' + renderPairs(numbers.ordinals.numbers) + renderNotes(numbers.ordinals.notes) + '</section>' +
       '<section class="learning-section"><h3>' + esc(numbers.time.title) + '</h3><p>' + esc(numbers.time.description) + '</p>' +
-      renderLearningTable(["Tid", "Svenska", "English"], numbers.time.examples.map(function (e) { return [e.time, e.sv, e.en]; })) + renderNotes(numbers.time.warnings) + '</section>' +
+      renderLearningTable(["Tid", "Svenska", "Português"], numbers.time.examples.map(function (e) { return [e.time, e.sv, e.en]; })) + renderNotes(numbers.time.warnings) + '</section>' +
       ['days', 'months', 'seasons'].map(function (key) {
         var section = numbers[key];
         return '<section class="learning-section"><h3>' + esc(section.title) + '</h3>' + renderPairs(section.items.map(function (item) {
@@ -860,7 +875,7 @@
       var tmp = choices[j]; choices[j] = choices[k]; choices[k] = tmp;
     }
     quizContainer.innerHTML =
-      '<div class="section-header"><h2>Quiz: Svenska → Engelska</h2><p>Välj rätt engelsk översättning.</p></div>' +
+      '<div class="section-header"><h2>Quiz: Svenska → Portugisiska</h2><p>Välj rätt portugisisk översättning.</p></div>' +
       '<div class="quiz-card">' +
       '<div class="quiz-word">' + esc(noun[4] + " " + noun[0]) + ' ' + speakerButton(noun[0]) + '</div>' +
       '<div class="quiz-options column">' +
@@ -895,7 +910,7 @@
       var tmp = choices[j]; choices[j] = choices[k]; choices[k] = tmp;
     }
     quizContainer.innerHTML =
-      '<div class="section-header"><h2>Quiz: Engelska → Svenska</h2><p>Välj rätt svenskt ord med artikel.</p></div>' +
+      '<div class="section-header"><h2>Quiz: Portugisiska → Svenska</h2><p>Välj rätt svenskt ord med artikel.</p></div>' +
       '<div class="quiz-card">' +
       '<div class="quiz-word">' + esc(en) + '</div>' +
       '<div class="quiz-options column">' +
@@ -1007,19 +1022,19 @@
     } else if (tabId === "nouns") {
       searchLabel.textContent = "Sök substantiv (En / Ett & Plural)";
       searchInput.placeholder = "bil, flicka, äpple, hus, book…";
-      searchHint.innerHTML = "Sök singular, plural, bestämd form eller engelska för att se alla 4 formerna.";
+      searchHint.innerHTML = "Sök singular, plural, bestämd form eller portugisiska för att se alla 4 formerna.";
       sectionTitle.textContent = "Vanliga substantiv & böjningsgrupper";
       fillChips(["bil", "flicka", "äpple", "hus", "katt", "barn", "bok", "stad", "tid", "jobb"]);
-      searchInput.setAttribute("aria-label", "Sök substantiv på svenska eller engelska");
+      searchInput.setAttribute("aria-label", "Sök substantiv på svenska eller portugisiska");
       renderBrowseList();
       executeSearch("bil");
     } else if (tabId === "adjectives") {
       searchLabel.textContent = "Sök adjektiv";
       searchInput.placeholder = "stor, större, beautiful…";
-      searchHint.textContent = "Sök grundform, böjd form eller engelsk betydelse.";
+      searchHint.textContent = "Sök grundform, böjd form eller portugisisk betydelse.";
       sectionTitle.textContent = "Adjektiv att utforska";
       fillChips(["stor", "bra", "fin", "liten", "glad", "snabb", "gammal", "viktig"]);
-      searchInput.setAttribute("aria-label", "Sök adjektiv på svenska eller engelska");
+      searchInput.setAttribute("aria-label", "Sök adjektiv på svenska eller portugisiska");
       renderBrowseList();
       executeSearch("stor");
     } else if (tabId === "themes") {
@@ -1034,8 +1049,8 @@
           '<div class="section-header"><h2>Öva</h2><p>Välj quizläge för att träna.</p></div>' +
           '<div class="quiz-mode-grid">' +
           '<button type="button" class="quiz-mode-btn" data-quiz-mode="en-ett"><strong>En / Ett</strong><span>Gissa rätt artikel</span></button>' +
-          '<button type="button" class="quiz-mode-btn" data-quiz-mode="sv-en"><strong>Svenska → Engelska</strong><span>Översätt till engelska</span></button>' +
-          '<button type="button" class="quiz-mode-btn" data-quiz-mode="en-sv"><strong>Engelska → Svenska</strong><span>Hitta svenskt ord</span></button>' +
+          '<button type="button" class="quiz-mode-btn" data-quiz-mode="sv-en"><strong>Svenska → Portugisiska</strong><span>Översätt till portugisiska</span></button>' +
+          '<button type="button" class="quiz-mode-btn" data-quiz-mode="en-sv"><strong>Portugisiska → Svenska</strong><span>Hitta svenskt ord</span></button>' +
           '</div>';
       }
     } else {
@@ -1318,8 +1333,8 @@
         '<div class="section-header"><h2>Öva</h2><p>Välj quizläge för att träna.</p></div>' +
         '<div class="quiz-mode-grid">' +
         '<button type="button" class="quiz-mode-btn" data-quiz-mode="en-ett"><strong>En / Ett</strong><span>Gissa rätt artikel</span></button>' +
-        '<button type="button" class="quiz-mode-btn" data-quiz-mode="sv-en"><strong>Svenska → Engelska</strong><span>Översätt till engelska</span></button>' +
-        '<button type="button" class="quiz-mode-btn" data-quiz-mode="en-sv"><strong>Engelska → Svenska</strong><span>Hitta svenskt ord</span></button>' +
+        '<button type="button" class="quiz-mode-btn" data-quiz-mode="sv-en"><strong>Svenska → Portugisiska</strong><span>Översätt till portugisiska</span></button>' +
+        '<button type="button" class="quiz-mode-btn" data-quiz-mode="en-sv"><strong>Portugisiska → Svenska</strong><span>Hitta svenskt ord</span></button>' +
         '</div>';
       return;
     }
