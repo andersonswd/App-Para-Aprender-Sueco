@@ -26,6 +26,8 @@
   nouns.forEach(function (n) { var t = ptNouns[n[0]]; if (t) { n[6] = t[0]; n[8] = t[1]; } });
   var ptAdj = window.ORDKOMPIS_PT_ADJECTIVES || [];
   adjectives.forEach(function (a, i) { var t = ptAdj[i]; if (t && t[0] === a[0]) { a[7] = t[1]; a[9] = t[2]; } });
+  var ptPreps = window.ORDKOMPIS_PT_PREPOSITIONS || [];
+  prepositions.forEach(function (p, i) { var t = ptPreps[i]; if (t && t.prep === p.prep && t.rules.length === p.rules.length && t.examples.length === p.examples.length) { p.english = t.english; p.rules = t.rules; p.verbCombinations = t.verbCombinations; p.examples.forEach(function (e, j) { e.en = t.examples[j]; }); } });
 
   // State
   var currentTab = "verbs"; // "verbs", "nouns", "themes", "quiz"
@@ -556,7 +558,7 @@
   }
 
   function renderPrepositions() {
-    learningContainer.innerHTML = learningHeader("Prepositioner", "Lär dig vanliga betydelser, uttryck och skillnader mellan svenska och engelska.") +
+    learningContainer.innerHTML = learningHeader("Prepositioner", "Lär dig vanliga betydelser, uttryck och skillnader mellan svenska och portugisiska.") +
       '<div class="learning-grid">' + prepositions.map(function (p) {
         return '<article class="learning-card"><div class="learning-card-heading"><h3>' + esc(p.prep) + '</h3><span>' + esc(p.english) + '</span></div>' +
           '<ul class="learning-list">' + p.rules.map(function (rule) { return '<li>' + rule + '</li>'; }).join("") + '</ul>' +
