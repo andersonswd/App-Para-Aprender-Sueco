@@ -43,6 +43,19 @@
       if (t && s) { s.title = t.title; s.rows.forEach(function (r, i) { if (t.rows[i]) r.en = t.rows[i]; }); }
     });
   }
+  var ptNum = window.ORDKOMPIS_PT_NUMBERS, nm = window.ORDKOMPIS_NUMBERS;
+  if (ptNum && nm) {
+    nm.description = ptNum.description;
+    ["cardinals", "ordinals"].forEach(function (k) { var t = ptNum[k], s = nm[k]; if (t && s) { s.title = t.title; s.notes = t.notes; } });
+    var ptTime = ptNum.time;
+    nm.time.title = ptTime.title; nm.time.description = ptTime.description; nm.time.warnings = ptTime.warnings;
+    nm.time.examples.forEach(function (e, i) { if (ptTime.en[i]) e.en = ptTime.en[i]; });
+    ["days", "months", "seasons"].forEach(function (k) {
+      var t = ptNum[k], s = nm[k];
+      if (t && s) { s.title = t.title; s.notes = t.notes; s.items.forEach(function (it, i) { if (t.items[i]) it.en = t.items[i]; }); }
+    });
+    nm.dateFormat.title = ptNum.dateFormat.title; nm.dateFormat.rules = ptNum.dateFormat.rules;
+  }
   var ptIdioms = window.ORDKOMPIS_PT_IDIOMS || [];
   (window.ORDKOMPIS_IDIOMS || []).forEach(function (it, i) { var t = ptIdioms[i]; if (t && t.id === it.id) { it.literal = t.literal; it.en = t.en; it.exampleEn = t.exampleEn; } });
   var ptWO = window.ORDKOMPIS_PT_WORDORDER;
