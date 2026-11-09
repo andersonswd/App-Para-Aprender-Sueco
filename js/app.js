@@ -56,6 +56,15 @@
     });
     nm.dateFormat.title = ptNum.dateFormat.title; nm.dateFormat.rules = ptNum.dateFormat.rules;
   }
+  var ptPhr = window.ORDKOMPIS_PT_PHRASES, phr = window.ORDKOMPIS_PHRASES;
+  if (ptPhr && phr) {
+    if (ptPhr.description) phr.description = ptPhr.description;
+    phr.categories.forEach(function (cat) {
+      var t = ptPhr.categories && ptPhr.categories[cat.id]; if (!t) return;
+      if (t.title) cat.title = t.title;
+      if (t.phrases && t.phrases.length === cat.phrases.length) cat.phrases.forEach(function (ph, i) { ph.en = t.phrases[i][0]; ph.note = t.phrases[i][1]; });
+    });
+  }
   var ptIdioms = window.ORDKOMPIS_PT_IDIOMS || [];
   (window.ORDKOMPIS_IDIOMS || []).forEach(function (it, i) { var t = ptIdioms[i]; if (t && t.id === it.id) { it.literal = t.literal; it.en = t.en; it.exampleEn = t.exampleEn; } });
   var ptWO = window.ORDKOMPIS_PT_WORDORDER;
