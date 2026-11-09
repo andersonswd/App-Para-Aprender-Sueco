@@ -65,6 +65,12 @@
       if (t.phrases && t.phrases.length === cat.phrases.length) cat.phrases.forEach(function (ph, i) { ph.en = t.phrases[i][0]; ph.note = t.phrases[i][1]; });
     });
   }
+  var ptColl = window.ORDKOMPIS_PT_COLLOCATIONS || [];
+  collocations.forEach(function (c, i) { var t = ptColl[i]; if (t && t.phrase === c.phrase) { c.meaning = t.meaning; c.pattern = t.pattern; c.exampleEn = t.exampleEn; c.note = t.note; } });
+  var ptPV = window.ORDKOMPIS_PT_PREPOSITIONAL_VERBS || [];
+  prepositionalVerbs.forEach(function (c, i) { var t = ptPV[i]; if (t && t.phrase === c.phrase) { c.meaning = t.meaning; c.exampleEn = t.exampleEn; } });
+  var ptCM = window.ORDKOMPIS_PT_COMMON_MISTAKES || [];
+  commonMistakes.forEach(function (m, i) { var t = ptCM[i]; if (t && t.wrong === m.wrong) { m.exampleEn = t.exampleEn; m.explanationPt = t.explanationPt; if (t.explanation) m.explanation = t.explanation; } });
   var ptIdioms = window.ORDKOMPIS_PT_IDIOMS || [];
   (window.ORDKOMPIS_IDIOMS || []).forEach(function (it, i) { var t = ptIdioms[i]; if (t && t.id === it.id) { it.literal = t.literal; it.en = t.en; it.exampleEn = t.exampleEn; } });
   var ptWO = window.ORDKOMPIS_PT_WORDORDER;
@@ -706,6 +712,7 @@
         '<p class="mistake-label">Naturlig svenska</p><p class="correct-example">' + esc(mistake.correct) + ' ' +
         speakerButton(mistake.correct, "Lyssna på den korrekta meningen") + '</p>' +
         '<p class="mistake-explanation">' + esc(mistake.explanation) + '</p>' +
+        (mistake.explanationPt ? '<p class="mistake-explanation"><b>Em português:</b> ' + esc(mistake.explanationPt) + '</p>' : '') +
         '<p class="mistake-translation">' + esc(mistake.exampleEn) + '</p>' +
         '</article>';
     }).join("") + '</div>';
